@@ -30,11 +30,12 @@ app.use(express.static("public"));
 
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
-mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/mongo_scraper",{
+mongoose.Promise = Promise;
+mongoose.connect(process.env.MONGODB_URI || "mongodb://JAABO:19890919@ds139929.mlab.com:39929/heroku_3d77r2n9", {
   useMongoClient: true
 });
 
+// var db = mongoose.connection;
 // Routes
 
 /*A GET route for scraping the echojs website
@@ -60,7 +61,7 @@ app.get("/scrape", function(req, res) {
         .attr("href");
 
       // Create a new Article using the `result` object built from scraping
-      db.Article
+     db.Article
         .create(result)
         .then(function(dbArticle) {
           // If we were able to successfully scrape and save an Article, send a message to the client
@@ -77,7 +78,7 @@ app.get("/scrape", function(req, res) {
 // Route for getting all Articles from the db
 app.get("/articles", function(req, res) {
   // Grab every document in the Articles collection
-  db.Article
+ db.Article
     .find({})
     .then(function(dbArticle) {
       // If we were able to successfully find Articles, send them back to the client
@@ -92,7 +93,7 @@ app.get("/articles", function(req, res) {
 // Route for grabbing a specific Article by id, populate it with it's note
 app.get("/articles/:id", function(req, res) {
   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
-  db.Article
+ db.Article
     .findOne({ _id: req.params.id })
     // ..and populate all of the notes associated with it
     .populate("note")
@@ -109,7 +110,7 @@ app.get("/articles/:id", function(req, res) {
 // Route for saving/updating an Article's associated Note
 app.post("/articles/:id", function(req, res) {
   // Create a new note and pass the req.body to the entry
-  db.Note
+ db.Note
     .create(req.body)
     .then(function(dbNote) {
       // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note

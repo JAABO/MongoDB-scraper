@@ -43,10 +43,6 @@ $(document).on("click", "#noteButton", function() {
     });
 });
 
-S(document).on('click', "#cancelButton", function(){
-
-});
-
 
 
 // When you click the savenote button
