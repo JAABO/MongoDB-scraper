@@ -31,7 +31,7 @@ app.use(express.static("public"));
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
-mongoose.connect(process.env.MONGODB_URI || "mongodb://JAABO:19890919@ds139929.mlab.com:39929/heroku_3d77r2n9", {
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/week18Populater", {
   useMongoClient: true
 });
 
@@ -42,15 +42,15 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://JAABO:19890919@ds139929.m
 it requires req and res, first axios call to URL is made, then only when the call is returned--
 -- cheerio will load using the response*/
 app.get("/scrape", function(req, res) {
+
   // First, we grab the body of the html with request
-  axios.get("http://echojs.com/").then(function(response) {
+  axios.get("http://www.echojs.com/").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
-
     // Now, we grab every h2 within an article tag, and do the following:
-    $("'div',feature_content h2").each(function(i, element) {
+    $("article h2").each(function(i, element) {
       // Save an empty result object
-      var result = {};
+      var result = [];
 
       // Add the text and href of every link, and save them as properties of the result object
       result.title = $(this)
